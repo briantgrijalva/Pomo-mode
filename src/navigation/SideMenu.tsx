@@ -1,16 +1,15 @@
-import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import React, { useContext, useEffect } from 'react';
+import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { SettingsScreen } from '../screens/SettingsScreen';
-// import { StackNavigator } from './StackNavigator';
 import { useWindowDimensions, View, Image, TouchableOpacity, Text, StatusBar } from 'react-native';
 import { styles } from '../theme/appTheme';
 import { PomodoroScreen } from '../screens/PomodoroScreen';
 import { ThemeContext } from '../context/themeContext/ThemeContext';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// import { Tabs } from './Tabs';
-// import Icon from 'react-native-vector-icons/Ionicons';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +18,7 @@ export const SideMenu = () => {
 
     const { theme } = useContext(ThemeContext);
     const { width } = useWindowDimensions();
+    const { top } = useSafeAreaInsets();
 
 
     useEffect(() => {
@@ -37,26 +37,29 @@ export const SideMenu = () => {
             animated={true}
             backgroundColor={theme.colors.background}
             barStyle={theme.dark ? 'light-content' : 'dark-content'}
-            // translucent={true}
-            // showHideTransition={statusBarTransition}
-            // hidden={hidden}
         />
         <NavigationContainer
             theme={theme}
         >
             <Drawer.Navigator
                 screenOptions={{
-                    headerShown: true,
+                    // headerShown: true,
                     drawerType: width >= 768 ? 'permanent' : 'front',
                     headerTintColor: theme.colors.primary,
                     headerStyle: {
                         elevation: 0,
                     },
-                    // headerTransparent: true,
                     title: '',
-                    // header: () => <CustomIcon />,
+                    header: ({navigation}) => (
+                        <TouchableOpacity
+                            style={{...styles.globalContainer, top: top + 20}}
+                            onPress={() => navigation.toggleDrawer()}
+                        >
+                            <Icon name="grid-outline" size={30} color={theme.colors.primary} />
+                        </TouchableOpacity>
+                    ),
+                    // headerTitle: 'test',
                 }}
-                // eslint-disable-next-line react/no-unstable-nested-components
                 drawerContent={ (props) => <InternalMenu {...props} />}
             >
                 {/* <Drawer.Screen name="Tabs" component={Tabs} /> */}

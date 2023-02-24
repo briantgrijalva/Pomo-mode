@@ -3,6 +3,7 @@ import React from 'react';
 import { ThemeProvider } from './src/context/themeContext/ThemeContext';
 import { SideMenu } from './src/navigation/SideMenu';
 import { TimerProvider } from './src/context/timerContext/TimerContext';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const AppState = ({children}: { children: JSX.Element | JSX.Element[]}) => {
 
@@ -18,7 +19,9 @@ const AppState = ({children}: { children: JSX.Element | JSX.Element[]}) => {
 const App = () => {
     return (
         <AppState>
-            <SideMenu />
+            <SafeAreaProvider>
+                <SideMenu />
+            </SafeAreaProvider>
         </AppState>
     );
 };

@@ -2,12 +2,16 @@
 type TimerActions =
 { type: 'set_work_time', payload: number | number[] } |
 { type: 'set_break_time', payload: number | number[] } |
-{ type: 'set_initial_time', payload: number | number[] }
+{ type: 'set_initial_break_time', payload: number | number[] } |
+{ type: 'set_initial_work_time', payload: number | number[] } |
+{ type: 'add_work_session', payload: number }
 
 export interface TimerState {
     workTime: number | number[];
     breakTime: number | number[];
-    initialTime: number | number[];
+    initialWorkTime: number | number[];
+    initialBreakTime: number | number[];
+    workSessions: number;
 }
 
 export const timerReducer = (state: TimerState, action: TimerActions): TimerState => {
@@ -23,10 +27,20 @@ export const timerReducer = (state: TimerState, action: TimerActions): TimerStat
                 ...state,
                 breakTime: action.payload,
             };
-        case 'set_initial_time':
+        case 'set_initial_break_time':
             return {
                 ...state,
-                initialTime: action.payload,
+                initialBreakTime: action.payload,
+            };
+        case 'set_initial_work_time':
+            return {
+                ...state,
+                initialWorkTime: action.payload,
+            };
+        case 'add_work_session':
+            return {
+                ...state,
+                workSessions: action.payload,
             };
         default:
         return state;

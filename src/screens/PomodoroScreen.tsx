@@ -6,7 +6,7 @@ import { TimerContext } from '../context/timerContext/TimerContext';
 import { useTimer } from '../hooks/useTimer';
 
 export const PomodoroScreen: React.FC = () => {
-    const { time, setInitialTime } = useContext(TimerContext);
+    const { time, setInitialWorkTime, setInitialBreakTime } = useContext(TimerContext);
 
     const { theme } = useContext(ThemeContext);
 
@@ -14,32 +14,50 @@ export const PomodoroScreen: React.FC = () => {
 
     const { seconds, running, pause, start, changeTime, stop } = useTimer();
     const [progress, setProgress] = useState<number>(seconds);
+    const [isWorkingTime, setIsWorkingTime] = useState<boolean>(true);
 
     useEffect(() => {
-        setInitialTime(Number(time.workTime));
+        setInitialWorkTime(Number(time.workTime));
+        setInitialBreakTime(Number(time.breakTime));
         // console.log({initial: time.initialTime});
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        setNewTime(Number(time.workTime));
+        if (isWorkingTime) {
+            setNewTime(Number(time.workTime));
+        } else {
+            setNewTime(Number(time.breakTime));
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [time.workTime]);
+    }, [time.workTime, time.breakTime, isWorkingTime]);
 
 
     useEffect(() => {
         // console.log(seconds);
-        if (seconds <= 0) {
-            stop();
-            setNewTime(Number(time.initialTime));
-            setProgress((seconds / (Number(time.workTime) * 60)) * 100);
+        if (isWorkingTime) {
+            if (seconds <= 0) {
+                stop();
+                setNewTime(Number(time.initialWorkTime));
+                setProgress((seconds / (Number(time.workTime) * 60)) * 100);
+                setIsWorkingTime(false);
+            } else {
+                setProgress((seconds / (Number(time.workTime) * 60)) * 100);
+            }
         } else {
-            setProgress((seconds / (Number(time.workTime) * 60)) * 100);
+            if (seconds <= 0) {
+                stop();
+                setNewTime(Number(time.initialBreakTime));
+                setProgress((seconds / (Number(time.breakTime) * 60)) * 100);
+                setIsWorkingTime(true);
+            } else {
+                setProgress((seconds / (Number(time.breakTime) * 60)) * 100);
+            }
         }
         // setProgress((seconds / (pomodoroTime * 60)) * 100);
         // setProgress((seconds / 60) * 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [seconds, time.workTime]);
+    }, [seconds, time.workTime, isWorkingTime]);
 
     const formatTime = (timeSeconds: number) => {
         let minutes: number | string = Math.floor(timeSeconds / 60);

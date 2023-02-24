@@ -5,6 +5,7 @@ import { ThemeContext } from '../context/themeContext/ThemeContext';
 import { styles } from '../theme/appTheme';
 import { Slider } from '@miblanchard/react-native-slider';
 import { TimerContext } from '../context/timerContext/TimerContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 export const SettingsScreen = () => {
@@ -15,8 +16,9 @@ export const SettingsScreen = () => {
         setIsEnabled(previousState => !previousState);
     };
 
+    const { top } = useSafeAreaInsets();
     const { theme, setDarkTheme, setLightTheme } = useContext(ThemeContext);
-    const { time, setBreakTime, setWorkTime, setInitialTime } = useContext(TimerContext);
+    const { time, setBreakTime, setWorkTime, setInitialWorkTime, setInitialBreakTime } = useContext(TimerContext);
 
     useEffect(() => {
         if (isEnabled === true) {
@@ -29,7 +31,7 @@ export const SettingsScreen = () => {
 
 
   return (
-    <View style={styles.globalContainer}>
+    <View style={{...styles.globalContainer, top: top + 30}}>
         <Text style={{...settingsStyles.title, color: theme.colors.text}}>Theme</Text>
         <View style={settingsStyles.row}>
             <Text style={{color: theme.colors.text}}>Darkmode</Text>
@@ -59,7 +61,7 @@ export const SettingsScreen = () => {
                     // console.log(itemValue.toLocaleString());
                     // setWorkTimer(itemValue);
                     setWorkTime(Number(itemValue.toLocaleString()));
-                    setInitialTime(Number(itemValue.toLocaleString()));
+                    setInitialWorkTime(Number(itemValue.toLocaleString()));
                 }}
                 // eslint-disable-next-line react-native/no-inline-styles
                 containerStyle={{
@@ -99,6 +101,7 @@ export const SettingsScreen = () => {
                     // console.log(itemValue);
                     // setBreakTimer(itemValue);
                     setBreakTime(Number(itemValue.toLocaleString()));
+                    setInitialBreakTime(Number(itemValue.toLocaleString()));
                 }}
                 // eslint-disable-next-line react-native/no-inline-styles
                 containerStyle={{

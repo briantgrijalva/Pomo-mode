@@ -6,7 +6,9 @@ interface TimerContextProps {
     time: TimerState;
     setWorkTime: (minutes: number | number[]) => void;
     setBreakTime: (minutes: number | number[]) => void;
-    setInitialTime: (minutes: number | number[]) => void;
+    setInitialWorkTime: (minutes: number | number[]) => void;
+    setInitialBreakTime: (minutes: number | number[]) => void;
+    addWorkSession: (minutes: number) => void;
 }
 
 export const TimerContext = createContext({} as TimerContextProps);
@@ -14,34 +16,31 @@ export const TimerContext = createContext({} as TimerContextProps);
 export const TimerProvider = ({children}: any) => {
 
     const [time, dispatch] = useReducer(timerReducer, {
-        initialTime: 1,
+        initialWorkTime: 1,
+        initialBreakTime: 2,
         workTime: 1,
-        breakTime: 5,
+        breakTime: 2,
+        workSessions: 0,
     } );
 
     const setWorkTime = (minutes: number | number[]) => {
         dispatch({type: 'set_work_time', payload: minutes});
-        // console.log('set_work_time');
     };
 
-    const setInitialTime = (minutes: number | number[]) => {
-        dispatch({type: 'set_initial_time', payload: minutes});
-        // console.log('set_work_time');
+    const setInitialWorkTime = (minutes: number | number[]) => {
+        dispatch({type: 'set_initial_work_time', payload: minutes});
     };
 
-    // dispatch({
-    //     type: 'signUp',
-    //     payload: {
-    //         token: resp.data.token,
-    //         user: resp.data.usuario,
-    //     },
-    // });
-
-
+    const setInitialBreakTime = (minutes: number | number[]) => {
+        dispatch({type: 'set_initial_break_time', payload: minutes});
+    };
 
     const setBreakTime = (minutes: number | number[]) => {
         dispatch({type: 'set_break_time', payload: minutes});
-        // console.log('set_break_time');
+    };
+
+    const addWorkSession = (minutes: number) => {
+        dispatch({type: 'add_work_session', payload: minutes});
     };
 
     return (
@@ -49,7 +48,9 @@ export const TimerProvider = ({children}: any) => {
             time,
             setWorkTime,
             setBreakTime,
-            setInitialTime,
+            setInitialWorkTime,
+            setInitialBreakTime,
+            addWorkSession,
         }}>
             { children }
         </TimerContext.Provider>
