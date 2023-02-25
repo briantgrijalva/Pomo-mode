@@ -20,12 +20,13 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     avatarContainer: {
-        alignItems: 'center',
+        // alignItems: 'center',
         marginTop: 20,
+        marginHorizontal: 30,
     },
     avatar: {
-        width: 150,
-        height: 150,
+        width: 80,
+        height: 80,
         borderRadius: 100,
     },
     menuContainer: {
@@ -36,6 +37,6 @@ export const styles = StyleSheet.create({
         marginVertical: 10,
     },
     menuText: {
-        fontSize: 20,
+        fontSize: 16,
     },
 });

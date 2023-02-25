@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect }  from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import React, { useContext }  from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { DividerElement } from '../components/DividerElement';
 import { ThemeContext } from '../context/themeContext/ThemeContext';
 import { styles } from '../theme/appTheme';
@@ -8,43 +8,17 @@ import { TimerContext } from '../context/timerContext/TimerContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
-export const SettingsScreen = () => {
+export const DurationTimerScreen = () => {
     // const [workTimer, setWorkTimer] = useState<number | number[]>(25);
     // const [breakTimer, setBreakTimer] = useState<number | number[]>(5);
-    const [isEnabled, setIsEnabled] = useState(true);
-    const toggleSwitch = () => {
-        setIsEnabled(previousState => !previousState);
-    };
 
     const { top } = useSafeAreaInsets();
-    const { theme, setDarkTheme, setLightTheme } = useContext(ThemeContext);
+    const { theme } = useContext(ThemeContext);
     const { time, setBreakTime, setWorkTime, setInitialWorkTime, setInitialBreakTime } = useContext(TimerContext);
-
-    useEffect(() => {
-        if (isEnabled === true) {
-            setDarkTheme();
-        } else {
-            setLightTheme();
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEnabled]);
 
 
   return (
     <View style={{...styles.globalContainer, top: top + 30}}>
-        <Text style={{...settingsStyles.title, color: theme.colors.text}}>Theme</Text>
-        <View style={settingsStyles.row}>
-            <Text style={{color: theme.colors.text}}>Darkmode</Text>
-            <Switch
-                trackColor={{false: '#767577', true: theme.colors.border}}
-                thumbColor={isEnabled ? theme.colors.primary : theme.colors.notification}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-            />
-        </View>
-
-        <DividerElement height={1} marginBottom={20} marginTop={12} />
 
         <Text style={{...settingsStyles.title, color: theme.colors.text}}>Timer</Text>
         <Text style={{color: theme.colors.text}}>Work session duration</Text>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { SettingsScreen } from '../screens/SettingsScreen';
+import { ThemeScreen } from '../screens/ThemeScreen';
 import { useWindowDimensions, View, Image, TouchableOpacity, Text, StatusBar } from 'react-native';
 import { styles } from '../theme/appTheme';
 import { PomodoroScreen } from '../screens/PomodoroScreen';
@@ -9,6 +9,7 @@ import { ThemeContext } from '../context/themeContext/ThemeContext';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { DurationTimerScreen } from '../screens/DurationTimerScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -55,7 +56,7 @@ export const SideMenu = () => {
                             style={{...styles.globalContainer, top: top + 20}}
                             onPress={() => navigation.toggleDrawer()}
                         >
-                            <Icon name="grid-outline" size={30} color={theme.colors.primary} />
+                            <Icon name="menu" size={30} color={theme.colors.primary} />
                         </TouchableOpacity>
                     ),
                     // headerTitle: 'test',
@@ -64,7 +65,8 @@ export const SideMenu = () => {
             >
                 {/* <Drawer.Screen name="Tabs" component={Tabs} /> */}
                 <Drawer.Screen name="PomodoroScreen" component={PomodoroScreen} />
-                <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+                <Drawer.Screen name="DurationTimerScreen" component={DurationTimerScreen} />
+                <Drawer.Screen name="ThemeScreen" component={ThemeScreen} />
             </Drawer.Navigator>
         </NavigationContainer>
     </View>
@@ -96,7 +98,7 @@ const InternalMenu = ( {navigation}: DrawerContentComponentProps) => {
                     }}
                     onPress={ () => navigation.navigate('PomodoroScreen')}
                 >
-                    {/* <Icon name="compass-outline" size={22} /> */}
+                    <Icon name="timer-outline" size={20} color={theme.colors.primary}/>
                     <Text // eslint-disable-next-line react-native/no-inline-styles
                         style={{
                             ...styles.menuText,
@@ -115,9 +117,9 @@ const InternalMenu = ( {navigation}: DrawerContentComponentProps) => {
                         flexDirection: 'row',
                         alignItems: 'center',
                     }}
-                    onPress={ () => navigation.navigate('SettingsScreen')}
+                    onPress={ () => navigation.navigate('DurationTimerScreen')}
                 >
-                    {/* <Icon name="settings-outline" size={22} /> */}
+                    <Icon name="hourglass-outline" size={20} color={theme.colors.primary}/>
                     <Text
                         // eslint-disable-next-line react-native/no-inline-styles
                         style={{
@@ -126,7 +128,29 @@ const InternalMenu = ( {navigation}: DrawerContentComponentProps) => {
                             marginLeft: 4,
                             }}
                         >
-                            Settings
+                            Timer duration
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{
+                        ...styles.menuButton,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                    onPress={ () => navigation.navigate('ThemeScreen')}
+                >
+                    <Icon name="color-palette-outline" size={20} color={theme.colors.primary}/>
+                    <Text
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        style={{
+                            ...styles.menuText,
+                            color: theme.colors.text,
+                            marginLeft: 4,
+                            }}
+                        >
+                            Appearence
                     </Text>
                 </TouchableOpacity>
             </View>

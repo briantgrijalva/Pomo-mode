@@ -1,27 +1,44 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Animated, Text } from 'react-native';
 import TimerCircle from '../components/TimerCircle';
 import { ThemeContext } from '../context/themeContext/ThemeContext';
 import { TimerContext } from '../context/timerContext/TimerContext';
 import { useTimer } from '../hooks/useTimer';
+import { useAnimation } from '../hooks/useAnimation';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const PomodoroScreen: React.FC = () => {
-    const { time, setInitialWorkTime, setInitialBreakTime } = useContext(TimerContext);
+    const { time, setInitialWorkTime, setInitialBreakTime, addWorkSession } = useContext(TimerContext);
 
     const { theme } = useContext(ThemeContext);
 
-
+    const { opacity, fadeIn, fadeOut, opValue } = useAnimation();
 
     const { seconds, running, pause, start, changeTime, stop } = useTimer();
     const [progress, setProgress] = useState<number>(seconds);
     const [isWorkingTime, setIsWorkingTime] = useState<boolean>(true);
+    const [paused, setPaused] = useState(true);
+
+    const { bottom, left } = useSafeAreaInsets();
 
     useEffect(() => {
         setInitialWorkTime(Number(time.workTime));
         setInitialBreakTime(Number(time.breakTime));
-        // console.log({initial: time.initialTime});
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (paused) {
+            if (opValue === 1) {
+                fadeOut(1000);
+            } else if (opValue === 0) {
+                fadeIn(1000);
+            }
+        } else {
+            fadeIn();
+        }
+    }, [paused, opacity, opValue, fadeOut, fadeIn]);
+
 
     useEffect(() => {
         if (isWorkingTime) {
@@ -34,9 +51,9 @@ export const PomodoroScreen: React.FC = () => {
 
 
     useEffect(() => {
-        // console.log(seconds);
         if (isWorkingTime) {
             if (seconds <= 0) {
+                addWorkSession(time.workSessions + 1);
                 stop();
                 setNewTime(Number(time.initialWorkTime));
                 setProgress((seconds / (Number(time.workTime) * 60)) * 100);
@@ -54,16 +71,12 @@ export const PomodoroScreen: React.FC = () => {
                 setProgress((seconds / (Number(time.breakTime) * 60)) * 100);
             }
         }
-        // setProgress((seconds / (pomodoroTime * 60)) * 100);
-        // setProgress((seconds / 60) * 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [seconds, time.workTime, isWorkingTime]);
 
     const formatTime = (timeSeconds: number) => {
         let minutes: number | string = Math.floor(timeSeconds / 60);
         let formatedSeconds: number | string = timeSeconds % 60;
-
-        // console.log(formatedSeconds);
 
         if (formatedSeconds < 10) {
             formatedSeconds = `0${formatedSeconds}`;
@@ -80,17 +93,61 @@ export const PomodoroScreen: React.FC = () => {
     };
 
     const setNewTime = (minutes: number) => {
-        // setPomodoroTime(minutes);
         changeTime(minutes * 60);
-        // setProgress((seconds / (Number(time.workTime) * 60)) * 100);
         setProgress((seconds / (minutes * 60)) * 100);
     };
 
   return (
-    <View style={stylesPomodoroScreen.container} onTouchEnd={running ? pause : start}>
-        {/* <Text style={stylesPomodoroScreen.heading}>Pomodoro Timer</Text> */}
+    <View
+        style={stylesPomodoroScreen.container}
+        onTouchEnd={() => {
+                if (running) {
+                    pause();
+                    setPaused(true);
+                } else {
+                    start();
+                    setPaused(false);
+                }
+            }
+        }
+    >
         <TimerCircle radius={150} stroke={10} progress={progress} />
-        <Text style={{...stylesPomodoroScreen.numbers, color: theme.colors.primary}}>{formatTime(seconds)}</Text>
+        <Animated.Text
+            style={{
+                ...stylesPomodoroScreen.numbers,
+                color: theme.colors.primary,
+                opacity,
+            }}
+        >
+            {formatTime(seconds)}
+        </Animated.Text>
+        <View
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+                position: 'absolute',
+                bottom: bottom + 20,
+                left: left + 20,
+                backgroundColor: theme.colors.notification,
+                borderRadius: 60,
+                width: 30,
+                height: 30,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                    color: theme.colors.primary,
+                    textAlign: 'center',
+                    verticalAlign: 'middle',
+                    fontWeight: 'bold',
+                }}
+            >
+                {time.workSessions}
+            </Text>
+        </View>
     </View>
   );
 };
