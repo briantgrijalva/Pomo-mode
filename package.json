@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.2.0",
+    "@react-native-firebase/app": "^17.3.1",
     "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-navigation/drawer": "^6.6.0",
     "@react-navigation/native": "^6.1.4",

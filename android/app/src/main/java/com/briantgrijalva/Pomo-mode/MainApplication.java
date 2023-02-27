@@ -1,4 +1,5 @@
-package com.pomodoro;
+// package com.pomodoro;
+package com.briantgrijalva.PomoMode;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 

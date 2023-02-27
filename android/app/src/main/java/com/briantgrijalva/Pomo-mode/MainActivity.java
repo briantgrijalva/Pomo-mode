@@ -1,4 +1,5 @@
-package com.pomodoro;
+// package com.pomodoro;
+package com.briantgrijalva.PomoMode;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

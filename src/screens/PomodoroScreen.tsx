@@ -6,7 +6,7 @@ import { TimerContext } from '../context/timerContext/TimerContext';
 import { useTimer } from '../hooks/useTimer';
 import { useAnimation } from '../hooks/useAnimation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-// import SplashScreen from 'react-native-splash-screen';
+import SplashScreen from 'react-native-splash-screen';
 
 export const PomodoroScreen: React.FC = () => {
     const { time, setInitialWorkTime, setInitialBreakTime, addWorkSession } = useContext(TimerContext);
@@ -22,9 +22,9 @@ export const PomodoroScreen: React.FC = () => {
 
     const { bottom, left } = useSafeAreaInsets();
 
-    // useEffect(() => {
-    //     SplashScreen.hide();
-    // }, []);
+    useEffect(() => {
+        SplashScreen.hide();
+    }, []);
 
     useEffect(() => {
         setInitialWorkTime(Number(time.workTime));

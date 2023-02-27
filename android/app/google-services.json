@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "701113663311",
+    "project_id": "pomomode",
+    "storage_bucket": "pomomode.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701113663311:android:5312d89e9c22ce1a9c4f3a",
+        "android_client_info": {
+          "package_name": "com.briantgrijalva.PomoMode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701113663311-ahnsgg9s00l117r4qj4hqnliq3b6qutp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.briantgrijalva.PomoMode",
+            "certificate_hash": "39e4313b1a0b7aafe52d54623614d40916fbd0a4"
+          }
+        },
+        {
+          "client_id": "701113663311-aggfnesc6vc3402c5o299ihggof0k95s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzt9arvPjWkGzTKGzhY40RZn4se_aiqV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701113663311-aggfnesc6vc3402c5o299ihggof0k95s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
