@@ -25,16 +25,17 @@ export const styles = StyleSheet.create({
         marginHorizontal: 30,
     },
     avatar: {
-        width: 80,
-        height: 80,
+        width: 60,
+        height: 60,
         borderRadius: 100,
+        borderWidth: 2,
     },
     menuContainer: {
         marginVertical: 30,
         marginHorizontal: 30,
     },
     menuButton: {
-        marginVertical: 10,
+        marginVertical: 18,
     },
     menuText: {
         fontSize: 16,
