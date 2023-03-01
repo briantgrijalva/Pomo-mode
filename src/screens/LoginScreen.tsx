@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useContext, useEffect } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeContext } from '../context/themeContext/ThemeContext';
 import { useForm } from '../hooks/useForm';
@@ -36,37 +36,41 @@ export const LoginScreen = ({ navigation }: Props) => {
         // signIn({correo: email, password});
     };
 
+
   return (
         <KeyboardAvoidingView
             // eslint-disable-next-line react-native/no-inline-styles
             style={{flex: 1}}
             behavior={(Platform.OS === 'ios') ? 'padding' : 'height'}
         >
-            <View style={{...styles.globalContainer, top: top}}>
-        <Text style={{color: theme.colors.text, fontSize: 14, top, textAlign: 'right'}}>
-            Sign up
-        </Text>
-        <Text style={{color: theme.colors.text, fontSize: 20, fontWeight: 'bold', top: top + 20}}>
-            Log in
-        </Text>
+        <View style={{...styles.globalContainer, top: top, marginHorizontal: 40}}>
+            
             {/* <View style={loginStyles.formContainer}> */}
 
                 {/* <WhiteLogo /> */}
 
                 {/* <Text style={loginStyles.title}>Login</Text> */}
 
-                <View style={{marginTop: 90}}/>
-                <Text
-                    style={{...loginStyles.label, color: theme.colors.text}}
-                >
-                    Email:
-                </Text>
+                <View style={{marginTop: 80}}/>
+                
+                <View style={{...loginStyles.bottomContainer, marginBottom: 10}}>
+                    <Image
+                        source={require('../assets/images/pomo.png')}
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        style={{
+                            width: 100,
+                            height: 100,
+                        }}
+                    />
+                </View>
 
                 <TextInput
-                    placeholder="Ingrese su email:"
-                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    placeholder="Email"
+                    // placeholderTextColor="rgba(255,255,255,0.4)"
+                    placeholderTextColor={theme.colors.notification}
                     keyboardType="email-address"
-                    underlineColorAndroid="white"
+                    style={{...loginStyles.textInput, borderColor: theme.colors.primary}}
+                    // underlineColorAndroid={theme.colors.border}
                     // style={[
                     //     loginStyles.inputField,
                     //     (Platform.OS === 'ios') && loginStyles.inputFieldIOS,
@@ -79,16 +83,12 @@ export const LoginScreen = ({ navigation }: Props) => {
                     // onSubmitEditing={onLogin}
                 />
 
-                <Text
-                    // style={loginStyles.label}
-                >
-                    Password:
-                </Text>
-
                 <TextInput
-                    placeholder="*********"
-                    placeholderTextColor="rgba(255,255,255,0.4)"
-                    underlineColorAndroid="white"
+                    placeholder="password"
+                    // placeholderTextColor="rgba(255,255,255,0.4)"
+                    placeholderTextColor={theme.colors.notification}
+                    // underlineColorAndroid={theme.colors.border}
+                    style={{...loginStyles.textInput, borderColor: theme.colors.primary}}
                     secureTextEntry
                     // style={[
                     //     loginStyles.inputField,
@@ -102,15 +102,15 @@ export const LoginScreen = ({ navigation }: Props) => {
                     // onSubmitEditing={onLogin}
                 />
                 <View
-                    // style={loginStyles.bottomContainer}
+                    style={loginStyles.bottomContainer}
                 >
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        // style={loginStyles.button}
+                        style={{...loginStyles.button, backgroundColor: theme.colors.primary}}
                         onPress={onLogin}
                     >
                         <Text
-                            // style={loginStyles.buttonText}
+                            style={{...loginStyles.buttonText, color: theme.colors.background}}
                         >
                             Login
                         </Text>
@@ -118,17 +118,17 @@ export const LoginScreen = ({ navigation }: Props) => {
                 </View>
 
                 <View
-                    // style={loginStyles.newUserContainer}
+                    style={loginStyles.bottomContainer}
                 >
                 <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={ () => navigation.replace('RegisterScreen')}
-                        // style={loginStyles.button}
+                        style={loginStyles.signUpButton}
                     >
                         <Text
-                            // style={loginStyles.buttonText}
+                            style={{...loginStyles.signUpText, color: theme.colors.text, borderBottomColor: theme.colors.border}}
                         >
-                            Nueva Cuenta
+                            Create a new account
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -149,5 +149,33 @@ const loginStyles = StyleSheet.create({
         justifyContent: 'center',
         height: 600,
         marginBottom: 50,
+    },
+    textInput: {
+        borderRadius: 4,
+        borderWidth: 1,
+        marginTop: 50,
+        paddingHorizontal: 8,
+    },
+    button: {
+        borderRadius: 40,
+        minWidth: 120,
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    signUpButton: {
+        // minWidth: 120,
+        marginTop: -8,
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    bottomContainer: {
+        marginTop: 60,
+        alignItems: 'center',
+    },
+    signUpText: {
+        borderBottomWidth: 1,
     },
 });

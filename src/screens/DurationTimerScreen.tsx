@@ -25,6 +25,8 @@ export const DurationTimerScreen = () => {
         <View style={settingsStyles.row}>
             <Slider
                 value={time.workTime}
+                thumbStyle={{height: 16, width: 16}}
+                trackStyle={{height: 3}}
                 maximumValue={60}
                 minimumValue={5}
                 thumbTintColor={theme.colors.primary}
@@ -65,6 +67,8 @@ export const DurationTimerScreen = () => {
         <View style={settingsStyles.row}>
             <Slider
                 value={time.breakTime}
+                thumbStyle={{height: 16, width: 16}}
+                trackStyle={{height: 3}}
                 maximumValue={25}
                 minimumValue={1}
                 thumbTintColor={theme.colors.primary}
