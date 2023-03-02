@@ -8,15 +8,16 @@ import { styles } from '../theme/appTheme';
 
 interface Props extends StackScreenProps<any, any> {}
 
-export const LoginScreen = ({ navigation }: Props) => {
+export const RegisterScreen = ({ navigation }: Props) => {
 
     const { theme } = useContext(ThemeContext);
     const { top } = useSafeAreaInsets();
     // const { signIn, errorMessage, removeError } = useContext(AuthContext);
 
-    const { email, password, onChange } = useForm({
+    const { name, email, password, onChange } = useForm({
         email: '',
         password: '',
+        name: '',
     });
 
     // useEffect(() => {
@@ -30,7 +31,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     // }, [errorMessage, removeError]);
 
     const onLogin = () => {
-        console.log({email, password});
+        console.log({name, email, password});
         Keyboard.dismiss();
 
         // signIn({correo: email, password});
@@ -43,16 +44,9 @@ export const LoginScreen = ({ navigation }: Props) => {
             style={{flex: 1}}
             behavior={(Platform.OS === 'ios') ? 'padding' : 'height'}
         >
-        <View style={{...styles.globalContainer, top: top, marginHorizontal: 40}}>
-            
-            {/* <View style={loginStyles.formContainer}> */}
-
-                {/* <WhiteLogo /> */}
-
-                {/* <Text style={loginStyles.title}>Login</Text> */}
+            <View style={{...styles.globalContainer, top: top, marginHorizontal: 40}}>
 
                 <View style={{marginTop: 40}}/>
-                
                 <View style={{...loginStyles.bottomContainer, marginBottom: 10}}>
                     <Image
                         source={require('../assets/images/pomo.png')}
@@ -63,6 +57,25 @@ export const LoginScreen = ({ navigation }: Props) => {
                         }}
                     />
                 </View>
+
+                <TextInput
+                    placeholder="Name"
+                    // placeholderTextColor="rgba(255,255,255,0.4)"
+                    placeholderTextColor={theme.colors.notification}
+                    keyboardType="default"
+                    style={{...loginStyles.textInput, borderColor: theme.colors.primary}}
+                    // underlineColorAndroid={theme.colors.border}
+                    // style={[
+                    //     loginStyles.inputField,
+                    //     (Platform.OS === 'ios') && loginStyles.inputFieldIOS,
+                    // ]}
+                    selectionColor="#DDDFDF"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    onChangeText={ (value) => onChange(value, 'email')}
+                    value={email}
+                    // onSubmitEditing={onLogin}
+                />
 
                 <TextInput
                     placeholder="Email"
@@ -112,7 +125,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                         <Text
                             style={{...loginStyles.buttonText, color: theme.colors.background}}
                         >
-                            Login
+                            Sign In
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -122,19 +135,18 @@ export const LoginScreen = ({ navigation }: Props) => {
                 >
                 <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={ () => navigation.navigate('RegisterScreen')}
+                        onPress={ () => navigation.navigate('LoginScreen')}
                         style={loginStyles.signUpButton}
                     >
                         <Text
                             style={{...loginStyles.signUpText, color: theme.colors.text, borderBottomColor: theme.colors.border}}
                         >
-                            Create a new account
+                            Log In
                         </Text>
                     </TouchableOpacity>
                 </View>
 
             </View>
-    {/* </View> */}
         </KeyboardAvoidingView>
   );
 };

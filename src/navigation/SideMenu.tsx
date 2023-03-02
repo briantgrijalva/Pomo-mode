@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeScreen } from '../screens/ThemeScreen';
 import { useWindowDimensions, View, Image, TouchableOpacity, Text, StatusBar } from 'react-native';
@@ -12,6 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DurationTimerScreen } from '../screens/DurationTimerScreen';
 import { DividerElement } from '../components/DividerElement';
 import { LoginScreen } from '../screens/LoginScreen';
+import { RegisterScreen } from '../screens/RegisterScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -100,6 +101,13 @@ export const SideMenu = () => {
                     }}
                     name="LoginScreen"
                     component={LoginScreen}
+                />
+                <Drawer.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="RegisterScreen"
+                    component={RegisterScreen}
                 />
             </Drawer.Navigator>
         </NavigationContainer>

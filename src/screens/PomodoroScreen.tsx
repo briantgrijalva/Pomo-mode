@@ -7,6 +7,8 @@ import { useTimer } from '../hooks/useTimer';
 import { useAnimation } from '../hooks/useAnimation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
+import KeepAwake from 'react-native-keep-awake';
+import BackgroundService from 'react-native-background-actions';
 
 export const PomodoroScreen: React.FC = () => {
     const { time, setInitialWorkTime, setInitialBreakTime, addWorkSession } = useContext(TimerContext);
@@ -22,9 +24,19 @@ export const PomodoroScreen: React.FC = () => {
 
     const { bottom, left } = useSafeAreaInsets();
 
+
     useEffect(() => {
         SplashScreen.hide();
     }, []);
+
+    useEffect(() => {
+        if (paused) {
+            KeepAwake.deactivate();
+        } else {
+            KeepAwake.activate();
+            BackgroundService.start(veryIntensiveTask, options);
+        }
+    }, [paused]);
 
     useEffect(() => {
         setInitialWorkTime(Number(time.workTime));
@@ -65,6 +77,7 @@ export const PomodoroScreen: React.FC = () => {
                 setIsWorkingTime(false);
             } else {
                 setProgress((seconds / (Number(time.workTime) * 60)) * 100);
+                BackgroundService.updateNotification({taskDesc: formatTime(seconds)});
             }
         } else {
             if (seconds <= 0) {
@@ -102,6 +115,32 @@ export const PomodoroScreen: React.FC = () => {
         setProgress((seconds / (minutes * 60)) * 100);
     };
 
+    const options = {
+        taskName: 'Example',
+        taskTitle: 'ExampleTask title',
+        // taskDesc: 'ExampleTask description',
+        taskDesc: formatTime(seconds),
+        taskIcon: {
+            name: 'ic_launcher',
+            type: 'mipmap',
+        },
+        color: '#ff00ff',
+        // linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+        parameters: {
+            delay: 1000,
+        },
+    };
+    console.log(BackgroundService.isRunning());
+
+    const veryIntensiveTask = async () => {
+        // Example of an infinite loop task
+        // const { delay } = taskDataArguments;
+        await new Promise( async () => {
+           return time.workTime;
+        });
+    };
+
+
   return (
     <View
         style={stylesPomodoroScreen.container}
@@ -131,7 +170,7 @@ export const PomodoroScreen: React.FC = () => {
             style={{
                 position: 'absolute',
                 bottom: bottom + 20,
-                left: left + 20,
+                left: left + 30,
                 backgroundColor: theme.colors.notification,
                 borderRadius: 60,
                 width: 30,

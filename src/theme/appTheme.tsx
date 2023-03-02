@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     //     backgroundColor: lightColor,
     // },
     globalContainer: {
-        marginHorizontal: 20,
+        marginHorizontal: 30,
     },
     title: {
         color: '#090B11',
