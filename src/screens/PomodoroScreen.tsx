@@ -34,7 +34,6 @@ export const PomodoroScreen: React.FC = () => {
             KeepAwake.deactivate();
         } else {
             KeepAwake.activate();
-            BackgroundService.start(veryIntensiveTask, options);
         }
     }, [paused]);
 
@@ -75,9 +74,11 @@ export const PomodoroScreen: React.FC = () => {
                 setNewTime(Number(time.initialWorkTime));
                 setProgress((seconds / (Number(time.workTime) * 60)) * 100);
                 setIsWorkingTime(false);
+                stopBgS();
             } else {
                 setProgress((seconds / (Number(time.workTime) * 60)) * 100);
-                BackgroundService.updateNotification({taskDesc: formatTime(seconds)});
+                let secsText = formatTime(seconds);
+                updateBgS(secsText);
             }
         } else {
             if (seconds <= 0) {
@@ -85,8 +86,11 @@ export const PomodoroScreen: React.FC = () => {
                 setNewTime(Number(time.initialBreakTime));
                 setProgress((seconds / (Number(time.breakTime) * 60)) * 100);
                 setIsWorkingTime(true);
+                stopBgS();
             } else {
                 setProgress((seconds / (Number(time.breakTime) * 60)) * 100);
+                let secsText = formatTime(seconds);
+                updateBgS(secsText);
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,42 +119,86 @@ export const PomodoroScreen: React.FC = () => {
         setProgress((seconds / (minutes * 60)) * 100);
     };
 
+    const sleep = (timeUse: number) => new Promise<void>((resolve) => setTimeout(() => resolve(), timeUse));
+
+    // You can do anything in your task such as network requests, timers and so on,
+    // as long as it doesn't touch UI. Once your task completes (i.e. the promise is resolved),
+    // React Native will go into "paused" mode (unless there are other tasks running,
+    // or there is a foreground app).
+    const veryIntensiveTask = async (taskDataArguments) => {
+        // Example of an infinite loop task
+        const { delay } = taskDataArguments;
+        await new Promise( async (resolve) => {
+            // await BackgroundService.updateNotification({taskDesc: 'descTask'});
+            for (let i = 0; BackgroundService.isRunning(); i++) {
+                console.log(i);
+                await sleep(delay);
+            }
+        });
+    };
+
     const options = {
         taskName: 'Example',
         taskTitle: 'ExampleTask title',
-        // taskDesc: 'ExampleTask description',
-        taskDesc: formatTime(seconds),
+        taskDesc: 'ExampleTask description',
         taskIcon: {
-            name: 'ic_launcher',
+            name: 'ic_launcher_monochrome',
             type: 'mipmap',
+            package: 'com.briantgrijalva.PomoMode',
         },
-        color: '#ff00ff',
+        // color: '#ffCA52',
         // linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+        linkingURI: 'PomoMode://PomodoroScreen/',
         parameters: {
             delay: 1000,
         },
     };
-    console.log(BackgroundService.isRunning());
 
-    const veryIntensiveTask = async () => {
-        // Example of an infinite loop task
-        // const { delay } = taskDataArguments;
-        await new Promise( async () => {
-           return time.workTime;
-        });
+    // const startBgS = async () => {
+    //     await BackgroundService.start(veryIntensiveTask, options);
+    //     await BackgroundService.updateNotification({taskDesc: 'start'});
+    // };
+
+
+    const stopBgS = async () => {
+        await BackgroundService.stop();
     };
 
+    const updateBgS = async (descTask: string) => {
+        try {
+            if (paused) {
+                await BackgroundService.stop();
+                return;
+            } else {
+                await BackgroundService.updateNotification({taskDesc: descTask});
+                console.log(BackgroundService.isRunning());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // Linking.addEventListener('url', handleOpenURL);
+
+    // function handleOpenURL(evt: any) {
+    //     // Will be called when the notification is pressed
+    //     console.log(evt.url);
+    //     console.log(evt.url);
+    //     // do something
+    // }
 
   return (
     <View
         style={stylesPomodoroScreen.container}
-        onTouchEnd={() => {
+        onTouchEnd={async() => {
                 if (running) {
                     pause();
                     setPaused(true);
+                    await stopBgS();
                 } else {
                     start();
                     setPaused(false);
+                    await BackgroundService.start(veryIntensiveTask, options);
                 }
             }
         }
