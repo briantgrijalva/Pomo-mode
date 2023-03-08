@@ -68,6 +68,7 @@ export const PomodoroScreen: React.FC = () => {
 
     useEffect(() => {
         if (isWorkingTime) {
+            updateBgSTitle('Work Session');
             if (seconds <= 0) {
                 addWorkSession(time.workSessions + 1);
                 stop();
@@ -81,6 +82,7 @@ export const PomodoroScreen: React.FC = () => {
                 updateBgS(secsText);
             }
         } else {
+            updateBgSTitle('Break Session');
             if (seconds <= 0) {
                 stop();
                 setNewTime(Number(time.initialBreakTime));
@@ -125,10 +127,10 @@ export const PomodoroScreen: React.FC = () => {
     // as long as it doesn't touch UI. Once your task completes (i.e. the promise is resolved),
     // React Native will go into "paused" mode (unless there are other tasks running,
     // or there is a foreground app).
-    const veryIntensiveTask = async (taskDataArguments) => {
+    const veryIntensiveTask = async (taskDataArguments: any) => {
         // Example of an infinite loop task
         const { delay } = taskDataArguments;
-        await new Promise( async (resolve) => {
+        await new Promise( async (_resolve) => {
             // await BackgroundService.updateNotification({taskDesc: 'descTask'});
             for (let i = 0; BackgroundService.isRunning(); i++) {
                 console.log(i);
@@ -138,26 +140,20 @@ export const PomodoroScreen: React.FC = () => {
     };
 
     const options = {
-        taskName: 'Example',
-        taskTitle: 'ExampleTask title',
-        taskDesc: 'ExampleTask description',
+        taskName: 'PomoMode',
+        taskTitle: 'Work Session',
+        taskDesc: time.initialWorkTime.toString(),
         taskIcon: {
             name: 'ic_launcher_monochrome',
             type: 'mipmap',
             package: 'com.briantgrijalva.PomoMode',
         },
         // color: '#ffCA52',
-        // linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
         linkingURI: 'PomoMode://PomodoroScreen/',
         parameters: {
             delay: 1000,
         },
     };
-
-    // const startBgS = async () => {
-    //     await BackgroundService.start(veryIntensiveTask, options);
-    //     await BackgroundService.updateNotification({taskDesc: 'start'});
-    // };
 
 
     const stopBgS = async () => {
@@ -178,14 +174,14 @@ export const PomodoroScreen: React.FC = () => {
         }
     };
 
-    // Linking.addEventListener('url', handleOpenURL);
+    const updateBgSTitle = async (titleTask: string) => {
+        try {
+            await BackgroundService.updateNotification({taskTitle: titleTask});
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    // function handleOpenURL(evt: any) {
-    //     // Will be called when the notification is pressed
-    //     console.log(evt.url);
-    //     console.log(evt.url);
-    //     // do something
-    // }
 
   return (
     <View
