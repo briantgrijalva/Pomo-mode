@@ -32,7 +32,7 @@ export const DurationTimerScreen = () => {
                 thumbTintColor={theme.colors.primary}
                 maximumTrackTintColor={theme.colors.notification}
                 minimumTrackTintColor={theme.colors.border}
-                step={1}
+                step={5}
                 onValueChange={(itemValue: number | number[]) => {
                     // console.log(itemValue.toLocaleString());
                     // setWorkTimer(itemValue);

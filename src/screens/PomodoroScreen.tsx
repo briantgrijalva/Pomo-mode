@@ -261,4 +261,3 @@ const stylesPomodoroScreen = StyleSheet.create({
         top: 480,
     },
 });
-

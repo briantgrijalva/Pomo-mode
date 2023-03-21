@@ -16,10 +16,10 @@ export const TimerContext = createContext({} as TimerContextProps);
 export const TimerProvider = ({children}: any) => {
 
     const [time, dispatch] = useReducer(timerReducer, {
-        initialWorkTime: 1,
-        initialBreakTime: 2,
-        workTime: 1,
-        breakTime: 2,
+        initialWorkTime: 25,
+        initialBreakTime: 5,
+        workTime: 25,
+        breakTime: 5,
         workSessions: 0,
     } );
 
