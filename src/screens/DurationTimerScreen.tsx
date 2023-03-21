@@ -113,5 +113,4 @@ const settingsStyles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
     },
-    // itemText: {},
 });
