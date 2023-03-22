@@ -9,8 +9,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 export const DurationTimerScreen = () => {
-    // const [workTimer, setWorkTimer] = useState<number | number[]>(25);
-    // const [breakTimer, setBreakTimer] = useState<number | number[]>(5);
 
     const { top } = useSafeAreaInsets();
     const { theme } = useContext(ThemeContext);
