@@ -155,7 +155,6 @@ export const PomodoroScreen: React.FC = () => {
         },
     };
 
-
     const stopBgS = async () => {
         await BackgroundService.stop();
     };
